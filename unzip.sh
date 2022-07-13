@@ -10,6 +10,8 @@ do
         tar xvf $f
     elif [[ $f == *".tar.gz" ]]; then
         tar zxvf $f
+    elif [[ $f == *".tar.bz2" ]]; then
+        tar jxvf $f
     elif [[ $f == *".tgz" ]]; then
         tar zxvf $f
     elif [[ $f == *".gz" ]]; then
