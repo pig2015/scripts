@@ -18,6 +18,8 @@ do
         unzip $f
     elif [[ $f == *".rar" ]]; then
         rar e $f
+    elif [[ $f == *".bz2" ]]; then
+	bunzip $f
     else
         echo "Error: unidentified compression type: $f"
     fi
