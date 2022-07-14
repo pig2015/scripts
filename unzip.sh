@@ -17,9 +17,7 @@ do
     elif [[ $f == *".gz" ]]; then
         gunzip $f
     elif [[ $f == *".zip" ]]; then
-        d=${f::-4}
-	mkdir $d
-        unzip $f -d $d
+        unzip $f
     elif [[ $f == *".rar" ]]; then
         rar e $f
     elif [[ $f == *".bz2" ]]; then
