@@ -22,6 +22,8 @@ do
         rar e $f
     elif [[ $f == *".bz2" ]]; then
 	bunzip $f
+    elif [[ $f == *".txz" ]]; then
+        tar xvf $f
     else
         echo "Error: unidentified compression type: $f"
     fi
