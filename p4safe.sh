@@ -40,7 +40,12 @@ is_p4ws() {
 }
 
 
-# p4 where 1> /dev/null 2> /dev/null  # not supported under nv bash env
+# find real path, p4 sometimes confused by symlink
+cd $(pwd -P)
+
+# not supported under nv bash env
+# p4 where 1> /dev/null 2> /dev/null
+
 res=$(is_p4ws $PWD)
 if [ "$res" -eq "0" ]; then
     echo "Invalid workdir, not a p4 workspace."
