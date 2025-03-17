@@ -5,6 +5,6 @@ if [[ $# == 1 ]]; then
 elif [[ $# == 2 ]];then
     find $2 -name $1
 else
-    echo "Error. Usage: <cmd> <filename_pattern> [<folder>]"
+    echo "Error. Usage: <cmd> '<filename_pattern>' [<folder>]"
 fi
 
