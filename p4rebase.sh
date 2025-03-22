@@ -21,7 +21,7 @@ $p4safe resolve -am
 
 # pull again to find previously added files
 echo "== FAST-FORWARDING (ADDS OPS) =="
-added_sync_msg=$($p4safe sync | grep "opened for add and can't be replaced")
+added_sync_msg=$($p4safe sync | grep "opened for add and can't be replaced" || true)
 
 # rebase previously added files
 added_files_msg=$(echo "$added_sync_msg" | cut -d'#' -f1)
@@ -50,7 +50,24 @@ echo "== FAST-FORWARDING (ADDS POST-PULL) =="
 $p4safe sync
 
 echo "== FAST-FORWARDING (NO CONFLICTS ADDS) =="
-$p4safe resolve -am
+$p4safe resolve -am  # pull again to find previously added files
+
+echo "== FAST-FORWARDING (DELETE OPS) =="
+deleted_opened_msg=$($p4safe opened | grep " - delete" || true)
+
+# rebase previously deleted files
+deleted_remote_files=($(echo "$deleted_opened_msg" | cut -d'#' -f1))  # to array
+
+for ((i=0; i<${#deleted_remote_files[@]}; i++)); do
+    deleted_remote_file=${deleted_remote_files[$i]}
+    echo "Processing: $deleted_remote_file"
+    have_msg=$($p4safe have $deleted_remote_file || true)
+    # if file is not on remote, it will be stderr: "file(s) not on client."
+    # otherwise stdout
+    if [[ "$have_msg" == "" ]]; then
+        $p4safe revert $deleted_remote_file
+    fi
+done
 
 echo "== REVIEW CONFLICTS =="
 $p4safe resolve -n
