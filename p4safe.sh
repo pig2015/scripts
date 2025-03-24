@@ -40,6 +40,22 @@ is_p4ws() {
 }
 
 
+is_fullpath() {
+    if [[ "$1" == ~/* ]]; then
+        echo 1
+    elif [[ "$1" == /* ]]; then
+        echo 1
+    else
+        echo 0
+    fi
+}
+
+
+to_realpath() {
+    echo "$(readlink -f $1)"
+}
+
+
 # find real path, p4 sometimes confused by symlink
 cd $(pwd -P)
 
@@ -52,7 +68,23 @@ if [ "$res" -eq "0" ]; then
     exit 1
 fi
 
-if [ $# -gt 0 ]; then
-    p4 $@
+# process each arg
+
+new_args=()
+
+for arg in "$@"
+do
+    processed_arg="$arg"
+    if [ "$(is_fullpath $arg)" -eq "1" ]; then
+        processed_arg=$(to_realpath $arg)
+    fi
+    new_args+=("$processed_arg")
+done
+
+# forward
+
+if [ ${#new_args[@]} -gt 0 ]; then
+    echo "CMD> p4 ${new_args[@]}"
+    p4 ${new_args[@]}
 fi
 
