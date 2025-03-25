@@ -40,9 +40,11 @@ is_p4ws() {
 }
 
 
-is_fullpath() {
+is_sys_fullpath() {
     if [[ "$1" == ~/* ]]; then
         echo 1
+    elif [[ "$1" == //* ]]; then  # p4 depot
+        echo 0
     elif [[ "$1" == /* ]]; then
         echo 1
     else
@@ -75,7 +77,7 @@ new_args=()
 for arg in "$@"
 do
     processed_arg="$arg"
-    if [ "$(is_fullpath $arg)" -eq "1" ]; then
+    if [ "$(is_sys_fullpath $arg)" -eq "1" ]; then
         processed_arg=$(to_realpath $arg)
     fi
     new_args+=("$processed_arg")
