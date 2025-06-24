@@ -86,7 +86,9 @@ done
 # forward
 
 if [ ${#new_args[@]} -gt 0 ]; then
-    echo "CMD> p4 ${new_args[@]}"
+    if [ "${P4SAFE_DISABLE_CMD_REPLAY}" != "1" ]; then
+        echo "CMD> p4 ${new_args[@]}"
+    fi
     p4 ${new_args[@]}
 fi
 
