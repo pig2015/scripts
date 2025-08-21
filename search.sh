@@ -8,5 +8,5 @@ elif [[ $# == 2 ]];then
     fi
     grep --color=always -rin "$1" $2
 else
-    echo "Error. Usage: <cmd> <grep_pattern> [<folder>]"; exit 1
+    echo "Error. Usage: <cmd> '<grep_regex_pattern>' [<folder>]"; exit 1
 fi

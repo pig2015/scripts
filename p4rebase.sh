@@ -6,11 +6,12 @@ FWD="$(dirname -- "${BASH_SOURCE[0]}")"
 
 p4safe=$FWD/p4safe.sh
 p4safe_quite=$FWD/p4safe_quite.sh
+p4sync=$FWD/p4safe.sh
 
 
 # pull
 echo "== PULLING =="
-$p4safe sync
+$p4sync
 
 # rebase previously opened for edit but now identical files
 echo "== FAST-FORWARDING (IDENTICAL EDITS) =="
