@@ -6,7 +6,7 @@ FWD="$(dirname -- "${BASH_SOURCE[0]}")"
 
 p4safe=$FWD/p4safe.sh
 p4safe_quite=$FWD/p4safe_quite.sh
-p4sync=$FWD/p4safe.sh
+p4sync=$FWD/p4sync.sh
 
 
 # pull
@@ -37,6 +37,8 @@ for ((i=0; i<${#added_remote_files[@]}; i++)); do
     echo "Processing #$((i + 1)): $added_local_file."
     rebasing_file=${added_local_file}.rebasing
     mv $added_local_file $rebasing_file
+    # a p4-added file cannot be sync, hence revert first
+    # whereas in some cases this is pointless, should check further
     $p4safe_quite revert $added_local_file
     $p4safe_quite sync $added_remote_file#1
     diff -q $added_local_file $rebasing_file > /dev/null

@@ -58,6 +58,24 @@ to_realpath() {
 }
 
 
+is_sys_dirpath() {
+    if [ -d "$1" ]; then
+        echo 1
+    else
+        echo 0
+    fi
+}
+
+
+normalize_dirpath() {
+    if [[ "$1" =~ [[:alnum:]]/$ ]]; then
+        echo "${1%/}"
+    else
+        echo "$1"
+    fi
+}
+
+
 # find real path, p4 sometimes confused by symlink
 cd $(pwd -P)
 
@@ -77,6 +95,9 @@ new_args=()
 for arg in "$@"
 do
     processed_arg="$arg"
+    if [ "$(is_sys_dirpath $arg)" -eq "1" ]; then
+        processed_arg=$(normalize_dirpath $arg)
+    fi
     if [ "$(is_sys_fullpath $arg)" -eq "1" ]; then
         processed_arg=$(to_realpath $arg)
     fi
