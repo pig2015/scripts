@@ -106,10 +106,12 @@ done
 
 # forward
 
+P4BIN=$(command -v p4)
+
 if [ ${#new_args[@]} -gt 0 ]; then
     if [ "${P4SAFE_DISABLE_CMD_REPLAY}" != "1" ]; then
         echo "CMD> p4 ${new_args[@]}"
     fi
-    p4 ${new_args[@]}
+    "$P4BIN" "${new_args[@]}"
 fi
 
