@@ -28,7 +28,7 @@ fi
 
 ATTACH_CLIENT=$(basename $PWD)
 
-p4 clients --me | grep $ATTACH_CLIENT  &>/dev/null
+p4 clients -e "$ATTACH_CLIENT" | grep -q "^Client $ATTACH_CLIENT "
 if [ $? -ne 0 ]; then
     echo "invalid workdir, no matching p4 client to attch: $ATTACH_CLIENT"
     exit 1
